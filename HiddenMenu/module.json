@@ -1,0 +1,13 @@
+{
+  "id": "{B771B59B-EE01-42C9-97A5-B2FD79F8B60C}",
+  "name": "HiddenMenu",
+  "type": 3,
+  "vendor": "Cassanis Automation",
+  "aliases": [
+    "Hidden Menu"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "HIDDM"
+}

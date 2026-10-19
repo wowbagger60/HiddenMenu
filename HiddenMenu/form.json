@@ -1,0 +1,257 @@
+{
+  "elements": [
+    {
+      "type": "Label",
+      "caption": "HiddenMenu 1.0 · Build 9"
+    },
+    {
+      "type": "Label",
+      "name": "ValidationMessage",
+      "caption": "",
+      "visible": false
+    },
+    {
+      "type": "SelectColor",
+      "name": "Background",
+      "caption": "Hintergrund der Ansicht",
+      "transparentCaption": "Transparent"
+    },
+    {
+      "type": "ValidationTextBox",
+      "name": "CloseCaption",
+      "caption": "Beschriftung Schliessen"
+    },
+    {
+      "type": "SelectCategory",
+      "name": "CloseTarget",
+      "caption": "Schliessen-Ziel (Kategorie; 0 = Button ausblenden)"
+    },
+    {
+      "type": "ExpansionPanel",
+      "caption": "HTML-Ansicht",
+      "items": [
+        {
+          "type": "Label",
+          "caption": "Freier HTML-Inhalt. Der Schliessen-Button wird separat angezeigt."
+        },
+        {
+          "type": "ValidationTextBox",
+          "name": "HTML",
+          "caption": "HTML",
+          "multiline": true,
+          "width": "100%"
+        },
+        {
+          "type": "Label",
+          "caption": "Der folgende Button ersetzt den HTML-Inhalt durch die mitgelieferte About-Seite."
+        },
+        {
+          "type": "Button",
+          "caption": "Mitgeliefertes HTML einsetzen",
+          "onClick": "IPS_RequestAction($id, 'ResetHTML', 0);"
+        }
+      ]
+    },
+    {
+      "type": "List",
+      "name": "Gesture",
+      "caption": "Gestenfolge zum Öffnen (Reihenfolge von oben nach unten)",
+      "rowCount": 4,
+      "add": true,
+      "delete": true,
+      "columns": [
+        {
+          "caption": "Geste",
+          "name": "Gesture",
+          "width": "auto",
+          "add": "tap3",
+          "edit": {
+            "type": "Select",
+            "options": [
+              {
+                "caption": "1 × Tippen",
+                "value": "tap1"
+              },
+              {
+                "caption": "2 × Tippen",
+                "value": "tap2"
+              },
+              {
+                "caption": "3 × Tippen",
+                "value": "tap3"
+              },
+              {
+                "caption": "4 × Tippen",
+                "value": "tap4"
+              },
+              {
+                "caption": "5 × Tippen",
+                "value": "tap5"
+              },
+              {
+                "caption": "Langes Drücken",
+                "value": "hold"
+              },
+              {
+                "caption": "Streichen nach oben",
+                "value": "up"
+              },
+              {
+                "caption": "Streichen nach unten",
+                "value": "down"
+              },
+              {
+                "caption": "Streichen nach links",
+                "value": "left"
+              },
+              {
+                "caption": "Streichen nach rechts",
+                "value": "right"
+              },
+              {
+                "caption": "Streichen links oben",
+                "value": "upLeft"
+              },
+              {
+                "caption": "Streichen rechts oben",
+                "value": "upRight"
+              },
+              {
+                "caption": "Streichen links unten",
+                "value": "downLeft"
+              },
+              {
+                "caption": "Streichen rechts unten",
+                "value": "downRight"
+              }
+            ]
+          }
+        }
+      ],
+      "changeOrder": true
+    },
+    {
+      "type": "ExpansionPanel",
+      "caption": "Erkennung",
+      "items": [
+        {
+          "type": "NumberSpinner",
+          "name": "TapGap",
+          "caption": "Maximale Pause zwischen Tipps",
+          "minimum": 150,
+          "maximum": 1000,
+          "suffix": " ms"
+        },
+        {
+          "type": "NumberSpinner",
+          "name": "HoldTime",
+          "caption": "Dauer für langes Drücken",
+          "minimum": 400,
+          "maximum": 3000,
+          "suffix": " ms"
+        },
+        {
+          "type": "NumberSpinner",
+          "name": "StepTimeout",
+          "caption": "Wartezeit bis zur nächsten Geste",
+          "minimum": 500,
+          "maximum": 10000,
+          "suffix": " ms"
+        },
+        {
+          "type": "NumberSpinner",
+          "name": "SwipeDistance",
+          "caption": "Mindeststrecke für Streichen",
+          "minimum": 20,
+          "maximum": 300,
+          "suffix": " px"
+        }
+      ]
+    },
+    {
+      "type": "Label",
+      "caption": "Ohne Target ist der Eintrag eine Zwischenüberschrift ohne Klickfunktion. Scripts werden ausgeführt, andere Objekte angezeigt. Icon wie TreeView; leer/Transparent blendet es aus. Die Folgeansicht gilt für ausgeführte Scripts."
+    },
+    {
+      "type": "List",
+      "name": "Items",
+      "caption": "Menüeinträge",
+      "rowCount": 6,
+      "add": true,
+      "delete": true,
+      "columns": [
+        {
+          "name": "Caption",
+          "caption": "Beschriftung",
+          "width": "auto",
+          "add": "Aktion",
+          "edit": {
+            "type": "ValidationTextBox"
+          }
+        },
+        {
+          "name": "Icon",
+          "caption": "Icon",
+          "width": "130px",
+          "add": "",
+          "edit": {
+            "type": "ValidationTextBox"
+          }
+        },
+        {
+          "name": "Background",
+          "caption": "Hintergrund",
+          "width": "130px",
+          "add": -1,
+          "edit": {
+            "type": "SelectColor",
+            "transparentCaption": "Transparent"
+          }
+        },
+        {
+          "name": "TargetID",
+          "caption": "Target",
+          "width": "200px",
+          "add": 0,
+          "edit": {
+            "type": "SelectObject",
+            "value": 0
+          }
+        },
+        {
+          "name": "After",
+          "caption": "Ansicht nach Targetaufruf",
+          "width": "200px",
+          "add": "menu",
+          "edit": {
+            "type": "Select",
+            "options": [
+              {
+                "caption": "Menü",
+                "value": "menu"
+              },
+              {
+                "caption": "HTML-Ansicht",
+                "value": "html"
+              },
+              {
+                "caption": "Schliessen-Ziel",
+                "value": "close"
+              }
+            ]
+          }
+        }
+      ],
+      "changeOrder": true,
+      "loadValuesFromConfiguration": false
+    }
+  ],
+  "actions": [],
+  "status": [
+    {
+      "code": 200,
+      "icon": "error",
+      "caption": "Ungültige Konfiguration – Details im Konfigurationsformular"
+    }
+  ]
+}

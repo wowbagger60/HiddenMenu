@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {hiddenMenuColor:color,hiddenMenuIcon:icon,hiddenMenuInk:ink}=require('../HiddenMenu/presentation.js');
+assert.equal(color(-1),'');assert.equal(color(undefined),'');assert.equal(color(0),'#000000');assert.equal(color(0xffffff),'#ffffff');assert.equal(color(0x123456),'#123456');assert.equal(color(0x1000000),'');
+assert.equal(icon(''),'');assert.equal(icon('Transparent'),'');assert.equal(icon(' GEAR '),'gear');assert.equal(icon('house'),'house');assert.equal(icon('" onclick=x'),'');
+assert.equal(ink(0),'#ffffff');assert.equal(ink(0xffffff),'#000000');
+for(const dark of [0x101010,0x202020,0x333333,0x000080,0x003366,0x006400])assert.equal(ink(dark),'#ffffff');
+assert.equal(ink(0x808080),'#ffffff');
+assert.equal(ink(0xbcbcbc),'#ffffff');
+assert.equal(ink(0xbdbdbd),'#000000');
+assert.equal(ink(0xbebebe),'#000000');
+console.log('23 presentation assertions passed.');

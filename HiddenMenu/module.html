@@ -1,0 +1,118 @@
+<div id="hiddm-root" data-hiddm-root><script>
+(()=>{
+/*__ENGINE__*/
+/*__INPUT__*/
+/*__LAYOUT__*/
+/*__PRESENTATION__*/
+'use strict';
+let config = /*__CONFIG__*/{};
+const host=document.currentScript?.closest('[data-hiddm-root]') || document.getElementById('hiddm-root');
+const ui=host.attachShadow({mode:'open'});
+function fit(){
+  const parent=host.parentElement;
+  if(!parent)return;
+  const viewport=window.visualViewport;
+  const viewportBottom=Math.min(document.documentElement.clientHeight || window.innerHeight,
+    viewport ? viewport.offsetTop+viewport.height : window.innerHeight);
+  const top=host.getBoundingClientRect().top;
+  const height=hiddenMenuHeight(viewportBottom,top,parent.clientHeight,
+    parent===document.body || parent===document.documentElement);
+  host.style.height=height+'px';
+}
+const resize=new ResizeObserver(fit);
+resize.observe(host.parentElement);
+window.addEventListener('resize',fit);
+window.visualViewport?.addEventListener('resize',fit);
+fit();
+ui.innerHTML="<style>\n:host{box-sizing:border-box;padding:0;border:0;display:block;height:calc(100% - 32px);width:calc(100% - 32px);margin:16px;min-height:0;min-width:0;overflow:hidden;font:16px/1.45 system-ui,sans-serif;color:var(--content-color,#333)}\n*{box-sizing:border-box}[hidden]{display:none!important}\n#layout{height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}\n#information{flex:1;min-height:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overflow-wrap:anywhere}\n#information,#information *{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important}\nh2{position:static;margin:0 0 16px;font-size:1.3rem;line-height:1.3}p{position:static;margin:0 0 16px}\nbutton{font:inherit;color:inherit;background:transparent;border:1px solid currentColor;border-radius:8px;padding:12px 18px;cursor:pointer}button:disabled{opacity:.5;cursor:default}\n#menu{flex:1;min-height:0;width:100%;max-width:620px;overflow:auto;margin:0 auto}#items{display:grid;gap:12px;margin:20px 0}#items button,#items .menu-heading{text-align:left;min-height:48px;display:flex;align-items:center;gap:10px}.menu-heading{margin:0;padding:12px 18px;font:inherit;font-weight:600;color:inherit;background:transparent;border:1px solid currentColor;border-radius:8px;cursor:default}.menu-icon{flex:0 0 1.25em;width:1.25em;text-align:center}.menu-icon svg{display:inline-block;height:1em;max-width:1.25em;vertical-align:-.125em;overflow:visible}\nfooter{flex:none;display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}#error{flex:none;color:#bd3030;margin:8px 0}\n</style><div id=\"layout\"><section id=\"information\"></section>\n<section id=\"menu\" hidden><div id=\"items\"></div><button id=\"back\">Zur\u00fcck</button></section>\n<div id=\"error\" role=\"status\" hidden></div><footer><button id=\"close\">Schliessen</button></footer></div>";
+const information=ui.getElementById('information'), menu=ui.getElementById('menu'), error=ui.getElementById('error');
+let engine, input, mode='html';
+function showError(text){error.textContent=text;error.hidden=!text;}
+function view(next){mode=next;engine.reset();information.hidden=next!=='html';menu.hidden=next!=='menu';showError('');}
+function closeView(){
+  if (!config.closeTarget) return;
+  if (typeof openObject !== 'function') {showError('Navigation ist auf diesem Client nicht verfügbar.');return;}
+  try {openObject(config.closeTarget);} catch(e){showError('Navigation fehlgeschlagen: '+e.message);}
+}
+let iconLoading=false;
+function refreshIcons(){
+  const fa=window.FontAwesome;
+  if(!fa?.dom?.i2svg)return;
+  for(const i of ui.querySelectorAll('i[data-icon]')){
+    const name=i.dataset.icon;
+    let kit=false;
+    try{kit=!!fa.findIconDefinition?.({prefix:'fak',iconName:name});}catch(e){}
+    i.className=(kit?'fa-kit':'fa-light')+' fa-'+name;
+  }
+  try{const result=fa.dom.i2svg({node:ui.getElementById('items')});result?.catch?.(()=>{});}catch(e){}
+}
+function ensureIcons(){
+  if(!ui.querySelector('i[data-icon]'))return;
+  if(window.FontAwesome){refreshIcons();return;}
+  if(iconLoading)return;
+  iconLoading=true;
+  const script=document.createElement('script');script.src='/icons.js';
+  script.onload=()=>{iconLoading=false;refreshIcons();};
+  script.onerror=()=>{iconLoading=false;};
+  (document.head||document.body).append(script);
+}
+function render(){
+  if(input) input.destroy();
+  if(engine) engine.reset();
+  engine=new HiddenGesture(config,()=>{if(config.valid)view('menu');});
+  input=new HiddenInput(information,engine,()=>mode==='html');
+  information.innerHTML=config.html;
+  const background=hiddenMenuColor(config.background ?? -1);
+  host.style.backgroundColor=background;
+  host.style.color=background?hiddenMenuInk(config.background):'';
+  const items=ui.getElementById('items');items.replaceChildren();
+  config.items.forEach((item,index)=>{
+    const icon=hiddenMenuIcon(item.icon);
+    const passive=item.type==='label'||!item.target;
+    const button=document.createElement(passive?'div':'button');
+    if(passive)button.className='menu-heading';
+    if(icon){
+      const wrapper=document.createElement('span');wrapper.className='menu-icon';
+      const i=document.createElement('i');i.dataset.icon=icon;
+      i.className='fa-light fa-'+icon;i.setAttribute('aria-hidden','true');
+      wrapper.append(i);button.append(wrapper);
+    }
+    const label=document.createElement('span');label.textContent=item.caption;button.append(label);
+    const color=hiddenMenuColor(item.background ?? -1);
+    // Explicit text colour on every row: global button/theme rules must not mask it.
+    button.style.backgroundColor=color;
+    button.style.color=color?hiddenMenuInk(item.background):'inherit';
+    if(passive){items.append(button);return;}
+    button.onclick=()=>{
+      if(button.disabled)return;
+      if(item.type==='target'){
+        if(typeof openObject!=='function'){showError('Navigation ist auf diesem Client nicht verfügbar.');return;}
+        button.disabled=true;
+        try{openObject(item.target);}catch(e){showError('Navigation fehlgeschlagen: '+e.message);}
+        setTimeout(()=>{button.disabled=false;},700);
+        return;
+      }
+      if(typeof requestAction!=='function'){showError('Scriptaufruf ist auf diesem Client nicht verfügbar.');return;}
+      button.disabled=true;
+      try{
+        requestAction('Execute',index);
+        // SDK has no completion acknowledgement: change view after dispatch.
+        if(item.after==='html')view('html');
+        else if(item.after==='close')closeView();
+      }catch(e){showError('Scriptaufruf fehlgeschlagen: '+e.message);}
+      setTimeout(()=>{button.disabled=false;},700);
+    };
+    items.append(button);
+  });
+  ensureIcons();
+  ui.getElementById('close').textContent=config.closeCaption;
+  ui.getElementById('close').hidden=!config.closeTarget;
+  view('html');
+}
+window.handleMessage=function(data){try{config=typeof data==='string'?JSON.parse(data):data;render();}catch(e){showError('Konfiguration konnte nicht geladen werden.');}};
+ui.getElementById('back').onclick=()=>view('html');
+ui.getElementById('close').onclick=closeView;
+render();
+
+})();
+</script></div>
