@@ -31,12 +31,12 @@ test('touch does not count synthetic mouse twice',()=>{const x=setup(['tap3']);x
 test('touch cancellation clears progress',()=>{const x=setup(['tap3']);x.touchTap();x.send(x.surface,'touchcancel');x.touchTap();x.touchTap();assert.equal(x.opened,0);x.input.destroy();});
 test('host double-click default is prevented',()=>{const x=setup(['tap3']);const e=x.send(x.surface,'dblclick');assert(e.defaultPrevented);x.input.destroy();});
 test('destroy removes old event handlers',()=>{const x=setup(['tap1']);x.input.destroy();x.mouseTap();assert.equal(x.opened,0);});
-test('old passive HTML annotation still recognizes triple click',()=>{
+test('legacy data-hiddm-passive attribute is ignored for clicks',()=>{
  const x=setup(['tap3']);
  x.surface.closest=selector=>selector.includes('[data-hiddm-passive]')?x.surface:null;
  for(let i=0;i<3;i++)x.mouseTap();assert.equal(x.opened,1);x.input.destroy();
 });
-test('old passive HTML annotation still recognizes triple tap',()=>{
+test('legacy data-hiddm-passive attribute is ignored for taps',()=>{
  const x=setup(['tap3']);
  x.surface.closest=selector=>selector.includes('[data-hiddm-passive]')?x.surface:null;
  for(let i=0;i<3;i++)x.touchTap();assert.equal(x.opened,1);x.input.destroy();

@@ -2,7 +2,7 @@
   "elements": [
     {
       "type": "Label",
-      "caption": "HiddenMenu 1.0 · Build 9"
+      "caption": "HiddenMenu 1.0 · Build 10"
     },
     {
       "type": "Label",
@@ -11,46 +11,18 @@
       "visible": false
     },
     {
+      "type": "SelectVariable",
+      "name": "ContentVariable",
+      "caption": "Inhalt (String-Variable mit HTML; leer = About-Seite)",
+      "validVariableTypes": [
+        3
+      ]
+    },
+    {
       "type": "SelectColor",
       "name": "Background",
       "caption": "Hintergrund der Ansicht",
       "transparentCaption": "Transparent"
-    },
-    {
-      "type": "ValidationTextBox",
-      "name": "CloseCaption",
-      "caption": "Beschriftung Schliessen"
-    },
-    {
-      "type": "SelectCategory",
-      "name": "CloseTarget",
-      "caption": "Schliessen-Ziel (Kategorie; 0 = Button ausblenden)"
-    },
-    {
-      "type": "ExpansionPanel",
-      "caption": "HTML-Ansicht",
-      "items": [
-        {
-          "type": "Label",
-          "caption": "Freier HTML-Inhalt. Der Schliessen-Button wird separat angezeigt."
-        },
-        {
-          "type": "ValidationTextBox",
-          "name": "HTML",
-          "caption": "HTML",
-          "multiline": true,
-          "width": "100%"
-        },
-        {
-          "type": "Label",
-          "caption": "Der folgende Button ersetzt den HTML-Inhalt durch die mitgelieferte About-Seite."
-        },
-        {
-          "type": "Button",
-          "caption": "Mitgeliefertes HTML einsetzen",
-          "onClick": "IPS_RequestAction($id, 'ResetHTML', 0);"
-        }
-      ]
     },
     {
       "type": "List",
@@ -170,7 +142,7 @@
     },
     {
       "type": "Label",
-      "caption": "Ohne Target ist der Eintrag eine Zwischenüberschrift ohne Klickfunktion. Scripts werden ausgeführt, andere Objekte angezeigt. Icon wie TreeView; leer/Transparent blendet es aus. Die Folgeansicht gilt für ausgeführte Scripts."
+      "caption": "Ohne Target ist der Eintrag eine Zwischenüberschrift ohne Klickfunktion. Scripts werden ausgeführt, andere Objekte angezeigt. Icon wie TreeView; leer/Transparent blendet es aus."
     },
     {
       "type": "List",
@@ -216,29 +188,6 @@
           "edit": {
             "type": "SelectObject",
             "value": 0
-          }
-        },
-        {
-          "name": "After",
-          "caption": "Ansicht nach Targetaufruf",
-          "width": "200px",
-          "add": "menu",
-          "edit": {
-            "type": "Select",
-            "options": [
-              {
-                "caption": "Menü",
-                "value": "menu"
-              },
-              {
-                "caption": "HTML-Ansicht",
-                "value": "html"
-              },
-              {
-                "caption": "Schliessen-Ziel",
-                "value": "close"
-              }
-            ]
           }
         }
       ],
