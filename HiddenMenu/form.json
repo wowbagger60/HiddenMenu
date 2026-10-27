@@ -13,7 +13,7 @@
     {
       "type": "SelectVariable",
       "name": "ContentVariable",
-      "caption": "Inhalt (String-Variable mit HTML; leer = About-Seite)",
+      "caption": "Content (string variable with HTML; empty = about page)",
       "validVariableTypes": [
         3
       ]
@@ -21,19 +21,19 @@
     {
       "type": "SelectColor",
       "name": "Background",
-      "caption": "Hintergrund der Ansicht",
+      "caption": "View background",
       "transparentCaption": "Transparent"
     },
     {
       "type": "List",
       "name": "Gesture",
-      "caption": "Gestenfolge zum Öffnen (Reihenfolge von oben nach unten)",
+      "caption": "Gesture sequence to open (order from top to bottom)",
       "rowCount": 4,
       "add": true,
       "delete": true,
       "columns": [
         {
-          "caption": "Geste",
+          "caption": "Gesture",
           "name": "Gesture",
           "width": "auto",
           "add": "tap3",
@@ -41,59 +41,59 @@
             "type": "Select",
             "options": [
               {
-                "caption": "1 × Tippen",
+                "caption": "Tap 1 ×",
                 "value": "tap1"
               },
               {
-                "caption": "2 × Tippen",
+                "caption": "Tap 2 ×",
                 "value": "tap2"
               },
               {
-                "caption": "3 × Tippen",
+                "caption": "Tap 3 ×",
                 "value": "tap3"
               },
               {
-                "caption": "4 × Tippen",
+                "caption": "Tap 4 ×",
                 "value": "tap4"
               },
               {
-                "caption": "5 × Tippen",
+                "caption": "Tap 5 ×",
                 "value": "tap5"
               },
               {
-                "caption": "Langes Drücken",
+                "caption": "Long press",
                 "value": "hold"
               },
               {
-                "caption": "Streichen nach oben",
+                "caption": "Swipe up",
                 "value": "up"
               },
               {
-                "caption": "Streichen nach unten",
+                "caption": "Swipe down",
                 "value": "down"
               },
               {
-                "caption": "Streichen nach links",
+                "caption": "Swipe left",
                 "value": "left"
               },
               {
-                "caption": "Streichen nach rechts",
+                "caption": "Swipe right",
                 "value": "right"
               },
               {
-                "caption": "Streichen links oben",
+                "caption": "Swipe up left",
                 "value": "upLeft"
               },
               {
-                "caption": "Streichen rechts oben",
+                "caption": "Swipe up right",
                 "value": "upRight"
               },
               {
-                "caption": "Streichen links unten",
+                "caption": "Swipe down left",
                 "value": "downLeft"
               },
               {
-                "caption": "Streichen rechts unten",
+                "caption": "Swipe down right",
                 "value": "downRight"
               }
             ]
@@ -104,12 +104,12 @@
     },
     {
       "type": "ExpansionPanel",
-      "caption": "Erkennung",
+      "caption": "Recognition",
       "items": [
         {
           "type": "NumberSpinner",
           "name": "TapGap",
-          "caption": "Maximale Pause zwischen Tipps",
+          "caption": "Maximum pause between taps",
           "minimum": 150,
           "maximum": 1000,
           "suffix": " ms"
@@ -117,7 +117,7 @@
         {
           "type": "NumberSpinner",
           "name": "HoldTime",
-          "caption": "Dauer für langes Drücken",
+          "caption": "Long press duration",
           "minimum": 400,
           "maximum": 3000,
           "suffix": " ms"
@@ -125,7 +125,7 @@
         {
           "type": "NumberSpinner",
           "name": "StepTimeout",
-          "caption": "Wartezeit bis zur nächsten Geste",
+          "caption": "Time until the next gesture",
           "minimum": 500,
           "maximum": 10000,
           "suffix": " ms"
@@ -133,7 +133,7 @@
         {
           "type": "NumberSpinner",
           "name": "SwipeDistance",
-          "caption": "Mindeststrecke für Streichen",
+          "caption": "Minimum swipe distance",
           "minimum": 20,
           "maximum": 300,
           "suffix": " px"
@@ -142,21 +142,21 @@
     },
     {
       "type": "Label",
-      "caption": "Ohne Target ist der Eintrag eine Zwischenüberschrift ohne Klickfunktion. Scripts werden ausgeführt, andere Objekte angezeigt. Icon wie TreeView; leer/Transparent blendet es aus."
+      "caption": "Without a target, the item is a heading without click function. Scripts are executed, other objects are displayed. Icon as in TreeView; empty/Transparent hides it."
     },
     {
       "type": "List",
       "name": "Items",
-      "caption": "Menüeinträge",
+      "caption": "Menu items",
       "rowCount": 6,
       "add": true,
       "delete": true,
       "columns": [
         {
           "name": "Caption",
-          "caption": "Beschriftung",
+          "caption": "Caption",
           "width": "auto",
-          "add": "Aktion",
+          "add": "Action",
           "edit": {
             "type": "ValidationTextBox"
           }
@@ -172,7 +172,7 @@
         },
         {
           "name": "Background",
-          "caption": "Hintergrund",
+          "caption": "Background",
           "width": "130px",
           "add": -1,
           "edit": {
@@ -200,7 +200,7 @@
     {
       "code": 200,
       "icon": "error",
-      "caption": "Ungültige Konfiguration – Details im Konfigurationsformular"
+      "caption": "Invalid configuration – details in the configuration form"
     }
   ]
 }

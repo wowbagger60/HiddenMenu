@@ -24,7 +24,7 @@ resize.observe(host.parentElement);
 window.addEventListener('resize',fit);
 window.visualViewport?.addEventListener('resize',fit);
 fit();
-ui.innerHTML="<style>\n:host{box-sizing:border-box;padding:0;border:0;display:block;height:calc(100% - 32px);width:calc(100% - 32px);margin:16px;min-height:0;min-width:0;overflow:hidden;font:16px/1.45 system-ui,sans-serif;color:var(--content-color,#333)}\n*{box-sizing:border-box}[hidden]{display:none!important}\n#layout{height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}\n#information{flex:1;min-height:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overflow-wrap:anywhere}\n#information,#information *{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important}\nh2{position:static;margin:0 0 16px;font-size:1.3rem;line-height:1.3}p{position:static;margin:0 0 16px}\nbutton{font:inherit;color:inherit;background:transparent;border:1px solid currentColor;border-radius:8px;padding:12px 18px;cursor:pointer}button:disabled{opacity:.5;cursor:default}\n#menu{flex:1;min-height:0;width:100%;max-width:620px;overflow:auto;margin:0 auto}#items{display:grid;gap:12px;margin:20px 0}#items button,#items .menu-heading{text-align:left;min-height:48px;display:flex;align-items:center;gap:10px}.menu-heading{margin:0;padding:12px 18px;font:inherit;font-weight:600;color:inherit;background:transparent;border:1px solid currentColor;border-radius:8px;cursor:default}.menu-icon{flex:0 0 1.25em;width:1.25em;text-align:center}.menu-icon svg{display:inline-block;height:1em;max-width:1.25em;vertical-align:-.125em;overflow:visible}\n#error{flex:none;color:#bd3030;margin:8px 0}\n</style><div id=\"layout\"><section id=\"information\"></section>\n<section id=\"menu\" hidden><div id=\"items\"></div><button id=\"back\">Zur\u00fcck</button></section>\n<div id=\"error\" role=\"status\" hidden></div></div>";
+ui.innerHTML="<style>\n:host{box-sizing:border-box;padding:0;border:0;display:block;height:calc(100% - 32px);width:calc(100% - 32px);margin:16px;min-height:0;min-width:0;overflow:hidden;font:16px/1.45 system-ui,sans-serif;color:var(--content-color,#333)}\n*{box-sizing:border-box}[hidden]{display:none!important}\n#layout{height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}\n#information{flex:1;min-height:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overflow-wrap:anywhere}\n#information,#information *{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important}\nh2{position:static;margin:0 0 16px;font-size:1.3rem;line-height:1.3}p{position:static;margin:0 0 16px}\nbutton{font:inherit;color:inherit;background:transparent;border:1px solid currentColor;border-radius:8px;padding:12px 18px;cursor:pointer}button:disabled{opacity:.5;cursor:default}\n#menu{flex:1;min-height:0;width:100%;max-width:620px;overflow:auto;margin:0 auto}#items{display:grid;gap:12px;margin:20px 0}#items button,#items .menu-heading{text-align:left;min-height:48px;display:flex;align-items:center;gap:10px}.menu-heading{margin:0;padding:12px 18px;font:inherit;font-weight:600;color:inherit;background:transparent;border:1px solid currentColor;border-radius:8px;cursor:default}.menu-icon{flex:0 0 1.25em;width:1.25em;text-align:center}.menu-icon svg{display:inline-block;height:1em;max-width:1.25em;vertical-align:-.125em;overflow:visible}\n#error{flex:none;color:#bd3030;margin:8px 0}\n</style><div id=\"layout\"><section id=\"information\"></section>\n<section id=\"menu\" hidden><div id=\"items\"></div><button id=\"back\"></button></section>\n<div id=\"error\" role=\"status\" hidden></div></div>";
 const information=ui.getElementById('information'), menu=ui.getElementById('menu'), error=ui.getElementById('error');
 let engine, input, mode='html';
 function showError(text){error.textContent=text;error.hidden=!text;}
@@ -81,22 +81,23 @@ function render(){
     button.onclick=()=>{
       if(button.disabled)return;
       if(item.type==='target'){
-        if(typeof openObject!=='function'){showError('Navigation ist auf diesem Client nicht verfügbar.');return;}
+        if(typeof openObject!=='function'){showError(config.texts.navigationUnavailable);return;}
         button.disabled=true;
-        try{openObject(item.target);}catch(e){showError('Navigation fehlgeschlagen: '+e.message);}
+        try{openObject(item.target);}catch(e){showError(config.texts.navigationFailed+e.message);}
         setTimeout(()=>{button.disabled=false;},700);
         return;
       }
-      if(typeof requestAction!=='function'){showError('Scriptaufruf ist auf diesem Client nicht verfügbar.');return;}
+      if(typeof requestAction!=='function'){showError(config.texts.scriptUnavailable);return;}
       button.disabled=true;
       try{
         requestAction('Execute',index);
-      }catch(e){showError('Scriptaufruf fehlgeschlagen: '+e.message);}
+      }catch(e){showError(config.texts.scriptFailed+e.message);}
       setTimeout(()=>{button.disabled=false;},700);
     };
     items.append(button);
   });
   ensureIcons();
+  ui.getElementById('back').textContent=config.texts.back;
   view('html');
 }
 window.handleMessage=function(data){
@@ -105,7 +106,7 @@ window.handleMessage=function(data){
     // A content-only update keeps the current view and gesture progress.
     if(!('items' in message)){config.content=message.content;information.innerHTML=config.content;return;}
     config=message;render();
-  }catch(e){showError('Konfiguration konnte nicht geladen werden.');}
+  }catch(e){showError(config.texts?.configFailed||'Configuration could not be loaded.');}
 };
 ui.getElementById('back').onclick=()=>view('html');
 render();

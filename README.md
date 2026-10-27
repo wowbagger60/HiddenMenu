@@ -1,23 +1,25 @@
 # HiddenMenu
 
-IP-Symcon-Bibliothek von Ueli Schweizer / Cassanis Automation.
+[Deutsch](README.de.md) | English
 
-| Modul | Beschreibung |
+IP-Symcon library by Ueli Schweizer / Cassanis Automation.
+
+| Module | Description |
 |---|---|
-| [HiddenMenu](HiddenMenu/README.md) | HTML-Kachel mit einem Menü, das sich über eine unsichtbare Gestenfolge öffnet |
+| [HiddenMenu](HiddenMenu/README.md) | HTML tile with a menu that opens via an invisible gesture sequence |
 
-## Voraussetzungen
+## Requirements
 
-IP-Symcon ab Version 8.2. Ab 9.1 wird die Kachel im Vollbild-Modus angezeigt.
+IP-Symcon 8.2 or later. From 9.1, the tile is shown in fullscreen mode.
 
 ## Installation
 
-Über den Module Store oder im Module Control mit der URL
+Via the Module Store, or in Module Control with the URL
 `https://github.com/wowbagger60/HiddenMenu`.
 
-## Entwicklung
+## Development
 
-Die Gesten- und Eingabelogik ist mit Node-Tests abgedeckt:
+The gesture and input logic is covered by Node tests:
 
 ```
 node tests/gestures.test.js
@@ -26,14 +28,14 @@ node tests/layout.test.js
 node tests/presentation.test.js
 ```
 
-Die Tests simulieren Ereignisse und ersetzen keinen Test in der echten
-Symcon-Visualisierung.
+The tests simulate events and do not replace a test in the real Symcon
+visualization.
 
-## Unterstützung
+## Support
 
-Dieses Modul ist kostenlos. Schenkungen als Unterstützung für den Autor werden
-gerne angenommen: PayPal an ueli.schweizer@cassanis.fr
+This module is free of charge. Donations to support the author are gratefully
+accepted: PayPal to ueli.schweizer@cassanis.fr
 
-## Lizenz
+## License
 
-MIT, siehe [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

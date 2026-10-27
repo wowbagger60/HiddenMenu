@@ -133,7 +133,7 @@ class HiddenMenu extends IPSModule
         $builtin = in_array(md5(trim(str_replace("\r\n", "\n", $html))), self::BUILTIN_HTML, true);
         // A custom page becomes the content variable; a shipped page is replaced by the current one.
         if (!$builtin && $this->ContentVariableID() === 0) {
-            $id = $this->RegisterVariableString('Content', 'Inhalt', '~HTMLBox', 0);
+            $id = $this->RegisterVariableString('Content', $this->Translate('Content'), '~HTMLBox', 0);
             SetValueString($id, $html);
             IPS_SetProperty($this->InstanceID, 'ContentVariable', $id);
         }
@@ -197,19 +197,19 @@ class HiddenMenu extends IPSModule
         $items = $this->MenuItems();
         $allowed = ['tap1', 'tap2', 'tap3', 'tap4', 'tap5', 'hold', 'up', 'down', 'left', 'right', 'upLeft', 'upRight', 'downLeft', 'downRight'];
         if (!is_array($gestures) || count($gestures) < 1) {
-            return 'Gestenfolge: Mindestens eine Geste konfigurieren.';
+            return $this->Translate('Gesture sequence: configure at least one gesture.');
         }
         foreach ($gestures as $index => $gesture) {
             if (!in_array($gesture['Gesture'] ?? '', $allowed, true)) {
-                return 'Gestenfolge, Schritt ' . ($index + 1) . ': Unbekannte Geste.';
+                return sprintf($this->Translate('Gesture sequence, step %d: unknown gesture.'), $index + 1);
             }
         }
         if (!is_array($items)) {
-            return 'Menüeinträge: Ungültiges JSON.';
+            return $this->Translate('Menu items: invalid JSON.');
         }
         $variable = $this->ContentVariableID();
         if ($variable !== 0 && (!IPS_VariableExists($variable) || IPS_GetVariable($variable)['VariableType'] !== 3)) {
-            return 'Inhalt: Objekt ' . $variable . ' ist keine vorhandene String-Variable.';
+            return sprintf($this->Translate('Content: object %d is not an existing string variable.'), $variable);
         }
         foreach ($items as $index => $item) {
             $id = (int) ($item['TargetID'] ?? 0);
@@ -217,12 +217,12 @@ class HiddenMenu extends IPSModule
             if ($id === 0) {
                 continue;
             }
-            $where = 'Menüeintrag ' . ($index + 1) . ' (' . ($item['Caption'] ?? '') . '): ';
+            $where = sprintf($this->Translate('Menu item %d (%s): '), $index + 1, $item['Caption'] ?? '');
             if ($id < 0 || !IPS_ObjectExists($id)) {
-                return $where . 'Target ' . $id . ' existiert nicht.';
+                return $where . sprintf($this->Translate('target %d does not exist.'), $id);
             }
             if (trim($item['Caption'] ?? '') === '') {
-                return $where . 'Beschriftung für das Target fehlt.';
+                return $where . $this->Translate('caption for the target is missing.');
             }
         }
         return '';
@@ -246,7 +246,15 @@ class HiddenMenu extends IPSModule
             'tapGap' => max(150, min(1000, $this->ReadPropertyInteger('TapGap'))),
             'holdTime' => max(400, min(3000, $this->ReadPropertyInteger('HoldTime'))),
             'stepTimeout' => max(500, min(10000, $this->ReadPropertyInteger('StepTimeout'))),
-            'swipeDistance' => max(20, min(300, $this->ReadPropertyInteger('SwipeDistance')))
+            'swipeDistance' => max(20, min(300, $this->ReadPropertyInteger('SwipeDistance'))),
+            'texts' => [
+                'back' => $this->Translate('Back'),
+                'navigationUnavailable' => $this->Translate('Navigation is not available on this client.'),
+                'navigationFailed' => $this->Translate('Navigation failed: '),
+                'scriptUnavailable' => $this->Translate('Script call is not available on this client.'),
+                'scriptFailed' => $this->Translate('Script call failed: '),
+                'configFailed' => $this->Translate('Configuration could not be loaded.')
+            ]
         ];
     }
 }
