@@ -141,6 +141,13 @@ accepted: PayPal to ueli.schweizer@cassanis.fr
 
 ## 9. Changelog
 
+**1.0 Build 11:**
+
+- An empty target or content variable is stored as object ID 1, the Symcon
+  default for «None». Values 0 and -1 from earlier builds are still read as
+  empty.
+- Documentation: HiddenMenu is a regular tile; fullscreen is optional from 9.1.
+
 **1.0 Build 10:**
 
 - The displayed content comes from a string variable instead of the HTML field
@@ -150,7 +157,6 @@ accepted: PayPal to ueli.schweizer@cassanis.fr
 - Configuration form, status messages and tile texts in English and German,
   following the IP-Symcon language setting.
 - Fullscreen mode can be used from IP-Symcon 9.1.
-- An empty target is stored as object ID 1, the Symcon default for «None».
 - **Update from Build 9 and older:** custom HTML content is automatically moved
   into the new string variable «Content» («Inhalt» in German) below the
   instance and selected as

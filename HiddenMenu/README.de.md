@@ -143,6 +143,14 @@ gerne angenommen: PayPal an ueli.schweizer@cassanis.fr
 
 ## 9. Änderungen
 
+**1.0 Build 11:**
+
+- Ein leeres Target und eine leere Inhaltsvariable werden als Objekt-ID 1
+  gespeichert, dem Symcon-Standard für «Kein(e)». Die Werte 0 und -1 früherer
+  Builds werden weiterhin als leer erkannt.
+- Dokumentation: HiddenMenu ist eine normale Kachel; Vollbild ist ab 9.1
+  zusätzlich möglich.
+
 **1.0 Build 10:**
 
 - Der angezeigte Inhalt stammt aus einer String-Variable statt aus dem HTML-Feld
@@ -150,7 +158,6 @@ gerne angenommen: PayPal an ueli.schweizer@cassanis.fr
 - Schliessen-Button, Schliessen-Ziel und «Ansicht nach Targetaufruf» entfallen;
   nach einem Script bleibt das Menü geöffnet.
 - Ab IP-Symcon 9.1 ist zusätzlich die Vollbild-Anzeige möglich.
-- Ein leeres Target wird als Objekt-ID 1 gespeichert, dem Symcon-Standard für «Kein(e)».
 - Konfigurationsformular, Statusmeldungen und Kacheltexte auf Deutsch und
   Englisch, abhängig von der Spracheinstellung von IP-Symcon.
 - **Update von Build 9 und älter:** Ein eigener HTML-Inhalt wird automatisch in
