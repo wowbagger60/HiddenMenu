@@ -26,9 +26,8 @@ recognized gesture sequence opens a menu with script actions and navigation targ
 ## 1. Requirements
 
 - IP-Symcon 8.2 or later (`openObject()` in the HTML SDK).
-- From version 9.1, the tile is shown in fullscreen mode
-  (`SetVisualizationType(2)`). Older versions use the regular HTML tile
-  (`SetVisualizationType(1)`), without fullscreen.
+- HiddenMenu is displayed as a regular tile. From version 9.1, it can also be
+  shown in fullscreen mode. Older versions support the tile view only.
 
 ## 2. Installation and first test
 
@@ -99,7 +98,7 @@ Each item has a caption, an optional icon, a background color and a target:
 - **Category:** is opened via `openObject()` on the triggering client.
 - **Other objects** (e.g. variables): are shown as a maximized tile via
   `openObject()`.
-- **No target:** the item is a heading without click function, displayed like
+- **No target** («None», Symcon object ID 1): the item is a heading without click function, displayed like
   the other items.
 
 After a script is triggered, the menu stays open. Script errors appear in the
@@ -150,7 +149,8 @@ accepted: PayPal to ueli.schweizer@cassanis.fr
   menu stays open after a script.
 - Configuration form, status messages and tile texts in English and German,
   following the IP-Symcon language setting.
-- Fullscreen mode from IP-Symcon 9.1.
+- Fullscreen mode can be used from IP-Symcon 9.1.
+- An empty target is stored as object ID 1, the Symcon default for «None».
 - **Update from Build 9 and older:** custom HTML content is automatically moved
   into the new string variable «Content» («Inhalt» in German) below the
   instance and selected as

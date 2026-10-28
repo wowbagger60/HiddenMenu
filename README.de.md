@@ -10,7 +10,7 @@ IP-Symcon-Bibliothek von Ueli Schweizer / Cassanis Automation.
 
 ## Voraussetzungen
 
-IP-Symcon ab Version 8.2. Ab 9.1 wird die Kachel im Vollbild-Modus angezeigt.
+IP-Symcon ab Version 8.2. Ab 9.1 kann die Kachel zusätzlich im Vollbild-Modus angezeigt werden.
 
 ## Installation
 

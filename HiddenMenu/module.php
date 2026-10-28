@@ -10,10 +10,13 @@ class HiddenMenu extends IPSModule
         '6d87887652620ae91865318f50103ee0'
     ];
 
+    // Symcon's SelectObject/SelectVariable value for Kein(e).
+    private const NO_OBJECT = 1;
+
     public function Create()
     {
         parent::Create();
-        $this->RegisterPropertyInteger('ContentVariable', 0);
+        $this->RegisterPropertyInteger('ContentVariable', self::NO_OBJECT);
         $this->RegisterPropertyInteger('Background', -1);
         $this->RegisterPropertyString('Gesture', '[{"Gesture":"tap3"}]');
         $this->RegisterPropertyString('Items', '[]');
@@ -41,7 +44,7 @@ class HiddenMenu extends IPSModule
             return;
         }
         $variable = $this->ContentVariableID();
-        if ($variable !== 0 && IPS_VariableExists($variable)) {
+        if ($variable !== self::NO_OBJECT && IPS_VariableExists($variable)) {
             $this->RegisterMessage($variable, VM_UPDATE);
         }
         $error = $this->ConfigurationError();
@@ -92,11 +95,11 @@ class HiddenMenu extends IPSModule
         if (!isset($items[$index])) {
             return;
         }
-        if ((int) $items[$index]['TargetID'] <= 0
+        if ($items[$index]['TargetID'] === self::NO_OBJECT
             || IPS_GetObject((int) $items[$index]['TargetID'])['ObjectType'] !== 3) {
             return;
         }
-        $script = (int) $items[$index]['TargetID'];
+        $script = $items[$index]['TargetID'];
         // Only configured scripts are accepted; the client never supplies a script ID.
         IPS_RunScriptEx($script, ['HIDDM_INSTANCE' => $this->InstanceID, 'HIDDM_ITEM' => $index]);
     }
@@ -132,7 +135,7 @@ class HiddenMenu extends IPSModule
         }
         $builtin = in_array(md5(trim(str_replace("\r\n", "\n", $html))), self::BUILTIN_HTML, true);
         // A custom page becomes the content variable; a shipped page is replaced by the current one.
-        if (!$builtin && $this->ContentVariableID() === 0) {
+        if (!$builtin && $this->ContentVariableID() === self::NO_OBJECT) {
             $id = $this->RegisterVariableString('Content', $this->Translate('Content'), '~HTMLBox', 0);
             SetValueString($id, $html);
             IPS_SetProperty($this->InstanceID, 'ContentVariable', $id);
@@ -144,15 +147,19 @@ class HiddenMenu extends IPSModule
 
     private function ContentVariableID(): int
     {
-        $id = $this->ReadPropertyInteger('ContentVariable');
-        // SelectVariable displays its default ID 1 as Kein(e).
-        return $id === -1 || $id === 1 ? 0 : $id;
+        return $this->NormalizeObjectID($this->ReadPropertyInteger('ContentVariable'));
+    }
+
+    private function NormalizeObjectID(int $id): int
+    {
+        // 0 and -1 were stored for an empty selection up to Build 10.
+        return $id === 0 || $id === -1 ? self::NO_OBJECT : $id;
     }
 
     private function Content(): string
     {
         $id = $this->ContentVariableID();
-        if ($id !== 0 && IPS_VariableExists($id) && IPS_GetVariable($id)['VariableType'] === 3) {
+        if ($id !== self::NO_OBJECT && IPS_VariableExists($id) && IPS_GetVariable($id)['VariableType'] === 3) {
             return GetValueString($id);
         }
         return file_get_contents(__DIR__ . '/default.html');
@@ -171,11 +178,7 @@ class HiddenMenu extends IPSModule
             }
             // Read Build 1-3 entries without changing stored properties during rendering.
             $legacyScript = !array_key_exists('TargetID', $item) && array_key_exists('ScriptID', $item);
-            $targetID = (int) ($legacyScript ? ($item['ScriptID'] ?? 0) : ($item['TargetID'] ?? 0));
-            // SelectObject displays its default ID 1 as Kein(e).
-            if ($targetID === -1 || $targetID === 1) {
-                $targetID = 0;
-            }
+            $targetID = $this->NormalizeObjectID((int) ($legacyScript ? ($item['ScriptID'] ?? self::NO_OBJECT) : ($item['TargetID'] ?? self::NO_OBJECT)));
             $result[] = [
                 'Caption' => $item['Caption'] ?? '',
                 'TargetID' => $targetID,
@@ -208,13 +211,13 @@ class HiddenMenu extends IPSModule
             return $this->Translate('Menu items: invalid JSON.');
         }
         $variable = $this->ContentVariableID();
-        if ($variable !== 0 && (!IPS_VariableExists($variable) || IPS_GetVariable($variable)['VariableType'] !== 3)) {
+        if ($variable !== self::NO_OBJECT && (!IPS_VariableExists($variable) || IPS_GetVariable($variable)['VariableType'] !== 3)) {
             return sprintf($this->Translate('Content: object %d is not an existing string variable.'), $variable);
         }
         foreach ($items as $index => $item) {
-            $id = (int) ($item['TargetID'] ?? 0);
+            $id = $item['TargetID'];
             // A heading has no action; its caption needs no validation.
-            if ($id === 0) {
+            if ($id === self::NO_OBJECT) {
                 continue;
             }
             $where = sprintf($this->Translate('Menu item %d (%s): '), $index + 1, $item['Caption'] ?? '');
@@ -239,9 +242,9 @@ class HiddenMenu extends IPSModule
             'items' => array_map(function ($item) {
                 return ['caption' => $item['Caption'] ?? '',
                     'icon' => $item['Icon'] ?? '', 'background' => (int) ($item['Background'] ?? -1),
-                    'type' => (int) ($item['TargetID'] ?? 0) === 0 ? 'label' : (IPS_ObjectExists((int) ($item['TargetID'] ?? 0))
-                        && IPS_GetObject((int) $item['TargetID'])['ObjectType'] === 3 ? 'script' : 'target'),
-                    'target' => (int) ($item['TargetID'] ?? 0)];
+                    'type' => $item['TargetID'] === self::NO_OBJECT ? 'label' : (IPS_ObjectExists($item['TargetID'])
+                        && IPS_GetObject($item['TargetID'])['ObjectType'] === 3 ? 'script' : 'target'),
+                    'target' => $item['TargetID']];
             }, $items),
             'tapGap' => max(150, min(1000, $this->ReadPropertyInteger('TapGap'))),
             'holdTime' => max(400, min(3000, $this->ReadPropertyInteger('HoldTime'))),

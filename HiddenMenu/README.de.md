@@ -26,9 +26,9 @@ erkannte Gestenfolge öffnet ein Menü mit Scriptaktionen und Navigationszielen.
 ## 1. Voraussetzungen
 
 - IP-Symcon ab Version 8.2 (`openObject()` im HTML-SDK).
-- Ab Version 9.1 wird die Kachel im Vollbild-Modus angezeigt
-  (`SetVisualizationType(2)`). Ältere Versionen nutzen die normale HTML-Kachel
-  (`SetVisualizationType(1)`), ohne Vollbild.
+- HiddenMenu wird als normale Kachel angezeigt. Ab Version 9.1 kann es
+  zusätzlich im Vollbild-Modus angezeigt werden. Ältere Versionen unterstützen
+  nur die Kachelansicht.
 
 ## 2. Installation und erster Test
 
@@ -100,7 +100,7 @@ und ein Target:
 - **Kategorie:** wird per `openObject()` auf dem auslösenden Client geöffnet.
 - **Andere Objekte** (z. B. Variablen): werden per `openObject()` als maximierte
   Kachel angezeigt.
-- **Kein Target:** der Eintrag ist eine Zwischenüberschrift ohne Klickfunktion,
+- **Kein Target** («Kein(e)», Symcon-Objekt-ID 1): der Eintrag ist eine Zwischenüberschrift ohne Klickfunktion,
   mit derselben Darstellung wie die übrigen Einträge.
 
 Nach dem Auslösen eines Scripts bleibt das Menü geöffnet. Scriptfehler erscheinen
@@ -149,7 +149,8 @@ gerne angenommen: PayPal an ueli.schweizer@cassanis.fr
   der Konfiguration und aktualisiert sich bei Änderungen sofort.
 - Schliessen-Button, Schliessen-Ziel und «Ansicht nach Targetaufruf» entfallen;
   nach einem Script bleibt das Menü geöffnet.
-- Ab IP-Symcon 9.1 Anzeige im Vollbild-Modus.
+- Ab IP-Symcon 9.1 ist zusätzlich die Vollbild-Anzeige möglich.
+- Ein leeres Target wird als Objekt-ID 1 gespeichert, dem Symcon-Standard für «Kein(e)».
 - Konfigurationsformular, Statusmeldungen und Kacheltexte auf Deutsch und
   Englisch, abhängig von der Spracheinstellung von IP-Symcon.
 - **Update von Build 9 und älter:** Ein eigener HTML-Inhalt wird automatisch in

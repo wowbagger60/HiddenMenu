@@ -10,7 +10,7 @@ IP-Symcon library by Ueli Schweizer / Cassanis Automation.
 
 ## Requirements
 
-IP-Symcon 8.2 or later. From 9.1, the tile is shown in fullscreen mode.
+IP-Symcon 8.2 or later. From 9.1, the tile can also be shown in fullscreen mode.
 
 ## Installation
 

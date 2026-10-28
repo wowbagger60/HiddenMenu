@@ -184,10 +184,10 @@
           "name": "TargetID",
           "caption": "Target",
           "width": "200px",
-          "add": 0,
+          "add": 1,
           "edit": {
             "type": "SelectObject",
-            "value": 0
+            "value": 1
           }
         }
       ],
