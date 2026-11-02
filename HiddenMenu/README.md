@@ -141,6 +141,11 @@ accepted: PayPal to ueli.schweizer@cassanis.fr
 
 ## 9. Changelog
 
+**1.0 Build 12:**
+
+- A maximized tile uses the full available height; previously the content
+  kept the height of the normal tile and was cut off.
+
 **1.0 Build 11:**
 
 - An empty target or content variable is stored as object ID 1, the Symcon

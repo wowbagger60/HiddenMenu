@@ -143,6 +143,11 @@ gerne angenommen: PayPal an ueli.schweizer@cassanis.fr
 
 ## 9. Änderungen
 
+**1.0 Build 12:**
+
+- Eine vergrösserte Kachel nutzt die ganze verfügbare Höhe; bisher behielt der
+  Inhalt die Höhe der normalen Kachel und wurde abgeschnitten.
+
 **1.0 Build 11:**
 
 - Ein leeres Target und eine leere Inhaltsvariable werden als Objekt-ID 1

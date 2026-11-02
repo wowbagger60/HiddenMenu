@@ -7,7 +7,9 @@ const cases=[
  ['small tile bounds',700,30,250,false,218],
  ['mobile visible viewport',500,24,700,true,460],
  ['very small viewport',30,24,30,true,0],
- ['fractional pixels cannot overflow',700,24.5,700,true,659]
+ ['fractional pixels cannot overflow',700,24.5,700,true,659],
+ ['content-sized parent follows viewport',1900,80,32,false,1804],
+ ['collapsed parent without margins',1900,80,0,false,1804]
 ];
 for(const [name,bottom,top,parent,body,expected] of cases){const actual=height(bottom,top,parent,body);assert.equal(actual,expected,name);if(top<bottom)assert(top+actual<=Math.max(top,bottom-16));console.log('PASS '+name);}
 console.log(cases.length+' layout regression tests passed.');
