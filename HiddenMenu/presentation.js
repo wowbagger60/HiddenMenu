@@ -13,4 +13,11 @@ function hiddenMenuInk(value){
   const brightness=.299*r+.587*g+.114*b;
   return brightness<189?'#ffffff':'#000000';
 }
-if(typeof module!=='undefined'&&module.exports)module.exports={hiddenMenuColor,hiddenMenuIcon,hiddenMenuInk};
+function hiddenMenuTouchAction(gestures){
+  // Touch scrolling is only allowed along axes that no configured swipe uses.
+  const list=Array.isArray(gestures)?gestures:[];
+  const vertical=list.some(g=>/^(up|down)/.test(g));
+  const horizontal=list.some(g=>/^(left|right)$|Left$|Right$/.test(g));
+  return !vertical&&!horizontal?'pan-x pan-y':!vertical?'pan-y':!horizontal?'pan-x':'none';
+}
+if(typeof module!=='undefined'&&module.exports)module.exports={hiddenMenuColor,hiddenMenuIcon,hiddenMenuInk,hiddenMenuTouchAction};

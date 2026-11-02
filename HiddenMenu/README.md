@@ -87,8 +87,12 @@ Notes:
   sequence in progress without visible feedback.
 - Links, buttons and input fields in the content remain usable and do not count
   as gestures.
-- The gesture area prevents scrolling and text selection, so keep the content
-  short.
+- Longer content can be scrolled with the mouse wheel, trackpad or scrollbar.
+  Touch scrolling works along the axes that no configured swipe uses: with
+  «Swipe down», for example, only horizontally; with a diagonal swipe, or with
+  both a vertical and a horizontal swipe, not at all. A scroll movement discards
+  a gesture sequence in progress.
+- Text in the content cannot be selected.
 
 ## 5. Menu items
 
@@ -140,6 +144,11 @@ This module is free of charge. Donations to support the author are gratefully
 accepted: PayPal to ueli.schweizer@cassanis.fr
 
 ## 9. Changelog
+
+**1.0 Build 13:**
+
+- Longer content can be scrolled; touch scrolling uses the axes that no
+  configured swipe needs.
 
 **1.0 Build 12:**
 

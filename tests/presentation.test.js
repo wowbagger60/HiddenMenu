@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict');
-const {hiddenMenuColor:color,hiddenMenuIcon:icon,hiddenMenuInk:ink}=require('../HiddenMenu/presentation.js');
+const {hiddenMenuColor:color,hiddenMenuIcon:icon,hiddenMenuInk:ink,hiddenMenuTouchAction:touch}=require('../HiddenMenu/presentation.js');
 assert.equal(color(-1),'');assert.equal(color(undefined),'');assert.equal(color(0),'#000000');assert.equal(color(0xffffff),'#ffffff');assert.equal(color(0x123456),'#123456');assert.equal(color(0x1000000),'');
 assert.equal(icon(''),'');assert.equal(icon('Transparent'),'');assert.equal(icon(' GEAR '),'gear');assert.equal(icon('house'),'house');assert.equal(icon('" onclick=x'),'');
 assert.equal(ink(0),'#ffffff');assert.equal(ink(0xffffff),'#000000');
@@ -8,4 +8,8 @@ assert.equal(ink(0x808080),'#ffffff');
 assert.equal(ink(0xbcbcbc),'#ffffff');
 assert.equal(ink(0xbdbdbd),'#000000');
 assert.equal(ink(0xbebebe),'#000000');
-console.log('23 presentation assertions passed.');
+assert.equal(touch(['tap3']),'pan-x pan-y');assert.equal(touch(['hold','tap2']),'pan-x pan-y');
+assert.equal(touch(['tap3','down']),'pan-x');assert.equal(touch(['up']),'pan-x');
+assert.equal(touch(['left']),'pan-y');assert.equal(touch(['tap3','right']),'pan-y');
+assert.equal(touch(['upLeft']),'none');assert.equal(touch(['down','right']),'none');assert.equal(touch(undefined),'pan-x pan-y');
+console.log('32 presentation assertions passed.');

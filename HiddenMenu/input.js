@@ -3,15 +3,20 @@ class HiddenInput {
   constructor(surface, engine, enabled, ownerDocument = surface.ownerDocument, win = ownerDocument.defaultView) {
     this.surface=surface; this.engine=engine; this.enabled=enabled; this.doc=ownerDocument;this.win=win;
     this.mouse=false;this.touch=null;this.blocked=false;this.ignoreMouseUntil=0;this.listeners=[];
+    // True when CSS touch-action allows native scrolling; touches then keep their default.
+    this.pan=false;
     const on=(target,name,fn,options={})=>{target.addEventListener(name,fn,options);this.listeners.push(()=>target.removeEventListener(name,fn,options));};
     const interactive=e=>e.target.closest?.('button,a,input,select,textarea,summary,[contenteditable="true"]');
     const stop=e=>{e.stopPropagation();if(e.cancelable)e.preventDefault();};
+    const touchStop=e=>{if(this.pan)e.stopPropagation();else stop(e);};
+    // A press on the scrollbar of the surface is no gesture.
+    const scrollbar=e=>e.target===surface&&(e.offsetX>=surface.clientWidth||e.offsetY>=surface.clientHeight);
     // Keep host tile gestures from interpreting our contacts as drag/double click.
     for(const name of ['pointerdown','pointermove','pointerup','click','dblclick','dragstart','contextmenu','selectstart']) {
       on(surface,name,e=>{e.stopPropagation();if(!interactive(e)&&['dblclick','dragstart','contextmenu','selectstart'].includes(name)&&e.cancelable)e.preventDefault();});
     }
     on(surface,'mousedown',e=>{
-      if(e.button!==0||!enabled()||interactive(e)||Date.now()<this.ignoreMouseUntil)return;
+      if(e.button!==0||!enabled()||interactive(e)||scrollbar(e)||Date.now()<this.ignoreMouseUntil)return;
       stop(e);this.mouse=true;engine.down('mouse',e.clientX,e.clientY,e.timeStamp);
     });
     on(ownerDocument,'mousemove',e=>{if(this.mouse){stop(e);engine.move('mouse',e.clientX,e.clientY);}},true);
@@ -21,14 +26,14 @@ class HiddenInput {
     },true);
     on(surface,'touchstart',e=>{
       if(!enabled()||interactive(e))return;
-      stop(e);this.ignoreMouseUntil=Date.now()+1000;
+      touchStop(e);this.ignoreMouseUntil=Date.now()+1000;
       if(e.touches.length!==1||this.touch!==null){this.blocked=true;this.touch=null;engine.reset();return;}
       if(this.blocked)return;
       const t=e.changedTouches[0];this.touch=t.identifier;
       engine.down(t.identifier,t.clientX,t.clientY,e.timeStamp);
     },{passive:false});
     on(surface,'touchmove',e=>{
-      if(this.touch===null&&!this.blocked)return;stop(e);
+      if(this.touch===null&&!this.blocked)return;touchStop(e);
       const t=Array.from(e.touches).find(t=>t.identifier===this.touch);
       if(t&&!this.blocked)engine.move(t.identifier,t.clientX,t.clientY);
     },{passive:false});

@@ -88,8 +88,13 @@ Hinweise:
   Berührungen verwerfen die laufende Folge ohne sichtbare Rückmeldung.
 - Links, Buttons und Eingabefelder im HTML-Inhalt bleiben bedienbar und zählen
   nicht als Geste.
-- Die Gestenfläche unterbindet Scrollen und Textauswahl; den HTML-Inhalt daher
-  kurz halten.
+- Längerer Inhalt lässt sich mit Mausrad, Trackpad oder Scrollbalken scrollen.
+  Mit dem Finger wird entlang der Achsen gescrollt, die keine konfigurierte
+  Streichgeste verwendet: mit «Streichen nach unten» zum Beispiel nur
+  waagrecht; mit einer diagonalen Geste, oder mit einer senkrechten und einer
+  waagrechten Geste, gar nicht. Eine Scrollbewegung verwirft eine laufende
+  Gestenfolge.
+- Text im Inhalt lässt sich nicht markieren.
 
 ## 5. Menüeinträge
 
@@ -142,6 +147,11 @@ Dieses Modul ist kostenlos. Schenkungen als Unterstützung für den Autor werden
 gerne angenommen: PayPal an ueli.schweizer@cassanis.fr
 
 ## 9. Änderungen
+
+**1.0 Build 13:**
+
+- Längerer Inhalt lässt sich scrollen; mit dem Finger entlang der Achsen, die
+  keine konfigurierte Streichgeste benötigt.
 
 **1.0 Build 12:**
 

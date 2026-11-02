@@ -44,4 +44,23 @@ test('legacy data-hiddm-passive attribute is ignored for taps',()=>{
 test('browser text selection is prevented',()=>{
  const x=setup(['tap3']);const e=x.send(x.surface,'selectstart');assert(e.defaultPrevented);x.input.destroy();
 });
+test('touch keeps native scrolling when panning is allowed',()=>{
+ const x=setup(['tap3']);x.input.pan=true;const touch={identifier:1,clientX:100,clientY:100};
+ const start=x.send(x.surface,'touchstart',{touches:[touch],changedTouches:[touch]});
+ const moved={identifier:1,clientX:100,clientY:180};
+ const move=x.send(x.surface,'touchmove',{touches:[moved],changedTouches:[moved]});
+ assert(!start.defaultPrevented);assert(!move.defaultPrevented);x.input.destroy();
+});
+test('taps still open the menu when panning is allowed',()=>{
+ const x=setup(['tap3']);x.input.pan=true;for(let i=0;i<3;i++)x.touchTap();assert.equal(x.opened,1);x.input.destroy();
+});
+test('touch default is prevented without panning',()=>{
+ const x=setup(['down']);const touch={identifier:1,clientX:100,clientY:100};
+ const start=x.send(x.surface,'touchstart',{touches:[touch],changedTouches:[touch]});assert(start.defaultPrevented);x.input.destroy();
+});
+test('mouse press on the scrollbar is no gesture',()=>{
+ const x=setup(['tap1']);x.surface.clientWidth=200;x.surface.clientHeight=200;
+ x.send(x.surface,'mousedown',{offsetX:205,offsetY:50});x.send(x.doc,'mouseup');assert.equal(x.opened,0);
+ x.send(x.surface,'mousedown',{offsetX:50,offsetY:50});x.send(x.doc,'mouseup');assert.equal(x.opened,1);x.input.destroy();
+});
 console.log(count+' input integration tests passed.');
